@@ -1,0 +1,11 @@
+## Storage Systems
+
+In this architecture, different storage systems are selected to support the four goals efficiently. For historical patient data used in readmission prediction, a Data Warehouse is used because it provides structured, cleaned, and query-optimized data suitable for analytics and machine learning. For real-time ICU vitals, a Data Lake is used since it can handle high-volume streaming data such as sensor readings without requiring strict schema enforcement. For enabling doctors to query patient history in plain English, a Vector Database is used to store embeddings of medical records, allowing semantic search and natural language queries. Additionally, transactional systems like Electronic Health Records (EHR) and billing systems act as OLTP databases, handling day-to-day operations with high consistency.
+
+## OLTP vs OLAP Boundary
+
+The OLTP systems in this design include EHR systems, billing systems, and ICU monitoring devices, where data is generated and updated in real time. These systems are optimized for fast writes and transactions. The boundary between OLTP and OLAP begins at the data ingestion layer, where data is extracted and moved into analytical storage systems such as the Data Lake and Data Warehouse. Once data enters these systems, it is transformed and optimized for analysis, reporting, and machine learning. The Data Warehouse and Vector Database belong to the OLAP side, supporting queries, reporting dashboards, and AI-driven insights rather than transactional operations.
+
+## Trade-offs
+
+One significant trade-off in this design is between real-time processing and system complexity. Supporting both batch processing (for historical analysis) and real-time streaming (for ICU data) increases architectural complexity and maintenance effort. However, this is necessary to meet both analytical and operational requirements. To mitigate this, a unified data ingestion layer is used to handle both batch and streaming pipelines, reducing duplication and improving manageability. Additionally, scalable tools and modular components can be adopted so that each part of the system can be maintained independently without affecting the entire architecture.
